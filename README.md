@@ -9,3 +9,5 @@ authentication : local , google oauth , google recaptcha
 database : mongodb , mongoose
 template engine : ejs
 email sender : yes
+environment variables : yes
+
