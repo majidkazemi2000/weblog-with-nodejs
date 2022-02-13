@@ -1,0 +1,435 @@
+    <!-- Preloader -->
+    <div class="loader-mask">
+        <div class="loader">
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Bg Overlay -->
+    <div class="content-overlay"></div>
+
+    <!-- Sidenav -->
+    <header class="sidenav" id="sidenav">
+
+        <!-- close -->
+        <div class="sidenav__close">
+            <button class="sidenav__close-button" id="sidenav__close-button" aria-label="close sidenav">
+                <i class="ui-close sidenav__close-icon"></i>
+            </button>
+        </div>
+
+        <!-- Nav -->
+        <nav class="sidenav__menu-container">
+            <ul class="sidenav__menu" role="menubar">
+                <li>
+                    <a href="/" class="sidenav__menu-url">صفحه اصلی</a>
+                </li>
+                <li>
+                    <a href="#" class="sidenav__menu-url">دسته بندی ها</a>
+                    <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                    <ul class="sidenav__menu-dropdown">
+                        <% if (categories.length > 0){ categories.forEach(category=>{ %>
+                            <li><a href="/posts/category/<%= category.slug %>" class="sidenav__menu-url"><%= category.title %></a></li>
+                        <%})} %>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="/login" class="sidenav__menu-url">ورود</a>
+                </li>
+                <li>
+                    <a href="/register" class="sidenav__menu-url">ثبت نام</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="socials sidenav__socials text-center align-items-center align-content-center" style="padding: 0;padding-top: 25px;">
+
+            <div class="col-md-1"></div>
+            <a class="social social-twitter col-md-3  text-center" href="#" target="_blank" aria-label="twitter">
+                <i class="ui-twitter"></i>
+            </a>
+            <a class="social social-youtube col-md-3 text-center" href="#" target="_blank" aria-label="youtube">
+                <i class="ui-youtube"></i>
+            </a>
+            <a class="social social-instagram col-md-3 text-center" href="#" target="_blank" aria-label="instagram">
+                <i class="ui-instagram"></i>
+            </a>
+        </div>
+    </header> <!-- end sidenav -->
+
+    <main class="main oh" id="main">
+
+        <!-- Navigation -->
+        <header class="nav">
+            <div class="nav__holder nav--sticky">
+                <div class="container relative">
+                    <div class="flex-parent">
+
+                        <!-- Side Menu Button -->
+                        <button class="nav-icon-toggle" id="nav-icon-toggle" aria-label="Open side menu">
+                            <span class="nav-icon-toggle__box">
+                                <span class="nav-icon-toggle__inner"></span>
+                            </span>
+                        </button>
+
+
+                        <!-- Nav-wrap -->
+                        <nav class="flex-child nav__wrap d-none d-lg-block">
+                            <ul class="nav__menu">
+
+                                <li class="active">
+                                    <a href="/">صفحه اصلی</a>
+                                </li>
+
+                                <li class="nav__dropdown">
+                                    <a href="#">دسته بندی ها</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <% if (categories.length > 0){ categories.forEach(category=>{ %>
+                                            <li><a href="/posts/category/<%= category.slug %>" class="sidenav__menu-url"><%= category.title %></a></li>
+                                        <%})} %>
+                                    </ul>
+                                </li>
+
+
+
+
+                            </ul> <!-- end menu -->
+                        </nav> <!-- end nav-wrap -->
+
+                        <!-- Nav Right -->
+                        <div class="nav__right">
+                            <% if (user != undefined){ %>
+                                <ul class="nav__menu" style="list-style: none;margin-left: 20px;">
+                                    <li style="display: inline;">
+                                        <p style="margin-top: 8px;margin-left: 10px;"><%= user.name %></p>
+                                    </li>
+                                    <span> | </span>
+                                    <li style="display: inline;">
+                                        <a href="/logout">خروج</a>
+                                    </li>
+                                </ul>
+                            <% }else{ %>
+                                <ul class="nav__menu" style="list-style: none;margin-left: 20px;">
+                                    <li style="display: inline;">
+                                        <a href="/login">ورود</a>
+                                    </li>
+                                    <span> | </span>
+                                    <li style="display: inline;">
+                                        <a href="/register">ثبت نام</a>
+                                    </li>
+                                </ul>
+                            <% } %>
+
+                            <!-- Search -->
+                            <div class="nav__right-item nav__search">
+                                <a href="#" class="nav__search-trigger" id="nav__search-trigger">
+                                    <i class="ui-search nav__search-trigger-icon"></i>
+                                </a>
+                                <div class="nav__search-box" id="nav__search-box">
+                                    <form action="/" method="get" class="nav__search-form">
+                                        <input name="search" type="text" placeholder="جستجو مقالات" class="nav__search-input">
+                                        <button type="submit" class="search-button btn btn-lg btn-color btn-button">
+                                            <i class="ui-search nav__search-icon"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div> <!-- end nav right -->
+
+                    </div> <!-- end flex-parent -->
+                </div> <!-- end container -->
+
+            </div>
+        </header> <!-- end navigation -->
+
+
+        <!-- Featured Posts Grid -->
+        <section class="featured-posts-grid" style="display: <% if (search != ''){ %> none; <% } %>">
+            <div class="container">
+                <div class="row row-8">
+
+                    <div class="col-lg-6">
+
+                        <!-- Small post -->
+                        <div class="featured-posts-grid__item featured-posts-grid__item--sm">
+                            <article class="entry card post-list featured-posts-grid__entry" style="background-color: #dddcdc !important;">
+                                <div class="entry__img-holder post-list__img-holder card__img-holder" style="background-image: url('/<%= path.basename(headerPosts[1].thumbnail) %>')">
+                                    <a href="/posts/<%= headerPosts[1].slug %>" class="thumb-url"></a>
+                                    <img src="/<%= path.basename(headerPosts[1].thumbnail) %>" alt="" class="entry__img d-none">
+                                    <a href="/posts/category/<%= headerPosts[1].category.slug %>" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--violet"><%= headerPosts[1].category.title %></a>
+                                </div>
+
+                                <div class="entry__body post-list__body card__body" style="background-color: #dddcdc !important;">
+                                    <h2 class="entry__title" style="font-size: 18px !important;">
+                                        <a href="/posts/<%= headerPosts[1].slug %>"><%= headerPosts[1].title %></a>
+                                    </h2>
+                                    <ul class="entry__meta" style="font-size: 10px !important;margin-top: 20px;">
+                                        <li class="entry__meta-author" style="font-size: 10px !important;">
+                                            <span>نویسنده : </span>
+                                            <a href="#"><%= headerPosts[1].user.name %></a>
+                                        </li>
+                                        <li class="entry__meta-date" style="direction: rtl;font-size: 10px !important;"><%= convertDate(moment(headerPosts[1].date).locale('fa').format('YYYY/MM/DD HH:mm')) %></li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div> <!-- end post -->
+
+                        <!-- Small post -->
+                        <div class="featured-posts-grid__item featured-posts-grid__item--sm">
+                            <article class="entry card post-list featured-posts-grid__entry" style="background-color: #dddcdc !important;">
+                                <div class="entry__img-holder post-list__img-holder card__img-holder" style="background-image: url('/<%= path.basename(headerPosts[2].thumbnail) %>');">
+                                    <a href="/posts/<%= headerPosts[2].slug %>" class="thumb-url"></a>
+                                    <img src="/<%= path.basename(headerPosts[2].thumbnail) %>" alt="" class="entry__img d-none">
+                                    <a href="/posts/category/<%= headerPosts[2].category.slug %>" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--purple"><%= headerPosts[2].category.title %></a>
+                                </div>
+
+                                <div class="entry__body post-list__body card__body" style="background-color: #dddcdc !important;">
+                                    <h2 class="entry__title" style="font-size: 18px !important;">
+                                        <a href="/posts/<%= headerPosts[2].slug %>"><%= headerPosts[2].title %></a>
+                                    </h2>
+                                    <ul class="entry__meta" style="font-size: 10px !important;margin-top: 20px;">
+                                        <li class="entry__meta-author" style="font-size: 10px !important;">
+                                            <span>نویسنده : </span>
+                                            <a href="#"><%= headerPosts[2].user.name %></a>
+                                        </li>
+                                        <li class="entry__meta-date" style="direction: rtl;font-size: 10px !important;"><%= convertDate(moment(headerPosts[2].date).locale('fa').format('YYYY/MM/DD HH:mm')) %></li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div> <!-- end post -->
+
+                        <!-- Small post -->
+                        <div class="featured-posts-grid__item featured-posts-grid__item--sm">
+                            <article class="entry card post-list featured-posts-grid__entry" style="background-color: #dddcdc !important;">
+                                <div class="entry__img-holder post-list__img-holder card__img-holder" style="background-image: url('/<%= path.basename(headerPosts[3].thumbnail) %>');">
+                                    <a href="/posts/<%= headerPosts[3].slug %>" class="thumb-url"></a>
+                                    <img src="/<%= path.basename(headerPosts[3].thumbnail) %>" alt="" class="entry__img d-none">
+                                    <a href="/posts/category/<%= headerPosts[3].category.slug %>" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--blue"><%= headerPosts[3].category.title %></a>
+                                </div>
+
+                                <div class="entry__body post-list__body card__body" style="background-color: #dddcdc !important;">
+                                    <h2 class="entry__title" style="font-size: 18px !important;">
+                                        <a href="/posts/<%= headerPosts[3].slug %>"><%= headerPosts[3].title %></a>
+                                    </h2>
+                                    <ul class="entry__meta" style="font-size: 10px !important;margin-top: 20px;">
+                                        <li class="entry__meta-author" style="font-size: 10px !important;">
+                                            <span>نویسنده : </span>
+                                            <a href="#"><%= headerPosts[3].user.name %></a>
+                                        </li>
+                                        <li class="entry__meta-date" style="direction: rtl;font-size: 10px !important;"><%= convertDate(moment(headerPosts[3].date).locale('fa').format('YYYY/MM/DD HH:mm')) %></li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div> <!-- end post -->
+
+                    </div> <!-- end col -->
+
+
+                    <% if (headerPosts.length > 0) {%>
+                    <div class="col-lg-6">
+
+                        <!-- Large post -->
+                        <div class="featured-posts-grid__item featured-posts-grid__item--lg">
+                            <article class="entry card featured-posts-grid__entry" style="background-color: #dddcdc !important;">
+                                <div class="entry__img-holder card__img-holder">
+                                    <a href="/posts/<%= headerPosts[0].slug %>"single-post.html">
+                                        <img src="/<%= path.basename(headerPosts[0].thumbnail) %>" alt="" class="entry__img">
+                                    </a>
+                                    <a href="/posts/category/<%= headerPosts[0].category.slug %>" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--green"><%= headerPosts[0].category.title %></a>
+                                </div>
+
+                                <div class="entry__body card__body" style="background-color: #dddcdc !important;">
+                                    <h2 class="entry__title">
+                                        <a href="/posts/<%= headerPosts[0].slug %>"><%= headerPosts[0].title %></a>
+                                    </h2>
+                                    <ul class="entry__meta">
+                                        <li class="entry__meta-author">
+                                            <span>نویسنده : </span>
+                                            <a href="#"><%= headerPosts[0].user.name %></a>
+                                        </li>
+                                        <li style="direction:rtl;" class="entry__meta-date"><%= convertDate(moment(headerPosts[0].date).locale('fa').format('YYYY/MM/DD HH:mm')) %></li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div> <!-- end large post -->
+                    </div>
+                    <% } %>
+
+                </div>
+            </div>
+        </section> <!-- end featured posts grid -->
+
+        <div class="main-container container pt-24" id="main-container">
+
+
+            <!-- Carousel posts -->
+            <section class="section mb-0" style="display: <% if (search != ''){ %> none; <% } %>">
+                <div class="title-wrap title-wrap--line">
+                    <h3 class="section-title">پربازدیدترین مقالات</h3>
+                </div>
+
+                <!-- Slider -->
+                <div id="owl-posts" class="owl-carousel owl-theme owl-carousel--arrows-outside">
+
+                    <% if (popularPosts.length > 0){ popularPosts.forEach(post=>{ %>
+                        <article class="entry thumb thumb--size-1" style="box-shadow: 0 8px 16px 0 rgba(0,0,0,.3);border-radius: 5px;">
+                            <div class="entry__img-holder thumb__img-holder" style="background-image: url('/<%= path.basename(post.thumbnail) %>');">
+                                <div class="bottom-gradient"></div>
+                                <div class="thumb-text-holder">
+                                    <h2 class="thumb-entry-title">
+                                        <a href="/posts/<%= post.slug %>"><%= post.title %></a>
+                                    </h2>
+                                </div>
+                                <a style="background: rgba(0,0,0,.4);" href="/posts/<%= post.slug %>" class="thumb-url"></a>
+                            </div>
+                        </article>
+                    <% })} %>
+                </div> <!-- end slider -->
+
+            </section> <!-- end carousel posts -->
+
+
+            <% if (posts.docs.length > 0){ %>
+                <div class="row">
+                    <div class="col-12 blog__content">
+
+                        <!-- Worldwide News -->
+                        <section class="section">
+                            <div class="title-wrap title-wrap--line">
+                                <% if (search != ''){ %>
+                                        <h3 class="section-title">نتایج جستجو برای <span style="color: #2D95E3;font-size: 30px;margin-right: 20px;"><%= search %></span></h3>
+                                <% }else{ %>
+                                        <h3 class="section-title">کل مقالات</h3>
+                                <% } %>
+                            </div>
+
+                            <% posts.docs.forEach(post=>{ %>
+
+
+                                <article class="entry card post-list" style="padding: 0;">
+                                    <div class="row">
+                                        <div class="col-lg-4" style="background-image: url('/<%= path.basename(post.thumbnail) %>');background-size: cover;background-repeat: no-repeat;padding: 0;">
+                                            <a href="/posts/<%= post.slug %>" class="thumb-url"></a>
+                                            <img src="/<%= path.basename(post.thumbnail) %>" alt="" style="width: 100%;height: 100%;">
+                                            <a href="/posts/category/<%= post.category.slug %>" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--blue"><%= post.category.title %></a>
+                                        </div>
+
+                                        <div class="col-lg-8" style="padding: 20px;">
+                                            <div class="entry__header">
+                                                <h2 class="entry__title" style="margin-bottom: 10px;">
+                                                    <a style="font-size: 18px;font-weight: bold;" href="/posts/<%= post.slug %>"><%= post.title %></a>
+                                                </h2>
+                                                <ul class="entry__meta">
+                                                    <li class="entry__meta-author">
+                                                        <span>نویسنده : </span>
+                                                        <a href="#"><%= post.user.name %></a>
+                                                    </li>
+                                                    <li style="direction:rtl;" class="entry__meta-date"><%= convertDate(moment(post.date).locale('fa').format('YYYY/MM/DD HH:mm')) %></li>
+                                                </ul>
+                                            </div>
+                                            <div class="entry__excerpt" style="padding: 10px;">
+                                                <p><%= extractContent(post.body).slice(0,300) %> ...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+
+
+                            <% }) %>
+
+
+                        </section> <!-- end worldwide news -->
+
+                        <!-- Pagination -->
+                        <% if (posts.totalPages > 1){ %>
+
+                        <nav class="pagination">
+                            <% if(posts.page !== 1 && posts.prevPage !== 1) {%>
+                                <a href="?page=1<% if (search != ''){ %>&search=<%= search %><% } %>" class="pagination__page">1</a>
+                            <% } %>
+
+                            <%if(posts.hasPrevPage) { %>
+                                    <a href="?page=<%= posts.prevPage %><% if (search != ''){ %>&search=<%= search %><% } %>" class="pagination__page"><%= posts.prevPage %></a>
+                            <% } %>
+                            <a href="?page=<%= posts.page %><% if (search != ''){ %>&search=<%= search %><% } %>" class="pagination__page pagination__page--current"><%= posts.page %></a>
+
+                            <% if(posts.hasNextPage) {%>
+                                    <a href="?page=<%= posts.nextPage %><% if (search != ''){ %>&search=<%= search %><% } %>" class="pagination__page"><%= posts.nextPage %></a>
+                            <% } %>
+                            <% if(posts.totalPages !== posts.page && posts.nextPage !== posts.totalPages) {%>
+                                    <a href="?page=<%= posts.totalPages %><% if (search != ''){ %>&search=<%= search %><% } %>" class="pagination__page"><%= posts.totalPages %></a>
+                            <% } %>
+
+                        </nav>
+                        <% } %>
+
+                    </div> <!-- end posts -->
+
+                </div>
+            <% }else{ %>
+
+                <div class="col-lg-12 text-center" style="margin-top: 150px;border: solid 2px black;border-radius: 5px;padding: 30px 10px;margin-bottom: 100px;"><p style="font-size: 30px;font-weight: bold;color: black;">هیچ پستی وجود ندارد</p></div>
+
+            <% } %>
+
+
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer footer--light" style="padding: 0;margin-top: 0;">
+            <div class="container" style="padding: 0;margin-top: 0;">
+                <div class="footer__widgets" style="padding:0;margin-top: 0;">
+                    <div class="row">
+
+                        <div class="col-lg-9 col-md-6"></div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <aside class="widget widget-logo">
+                                <a href="index.html">
+                                    <img src="/imgBlog/logo_default_white.png" srcset="/imgBlog/logo_default_white.png 1x, /imgBlog/logo_default_white@2x.png 2x" class="logo__img" alt="">
+                                </a>
+                                <p class="copyright text-center">
+                                    © حقوق سایت متعلق به مجید کاظمی است
+                                </p>
+                                <div class="socials socials--large socials--rounded mb-24">
+                                    <div class="col-lg-3 col-4"></div>
+                                    <a href="#" class="social social-twitter" aria-label="twitter"><i class="ui-twitter"></i></a>
+                                    <a href="#" class="social social-youtube" aria-label="youtube"><i class="ui-youtube"></i></a>
+                                    <a href="#" class="social social-instagram" aria-label="instagram"><i class="ui-instagram"></i></a>
+                                </div>
+                            </aside>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div> <!-- end container -->
+        </footer> <!-- end footer -->
+
+        <div id="back-to-top">
+            <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+        </div>
+
+    </main> <!-- end main-wrapper -->
+
+
+
+    <script src="/sweetalert2/dist/sweetalert2.js"></script>
+    <% if(message.length > 0){ %>
+        <script>
+            var x = `<%= message %>` ;
+
+            var msg = x.split("-");
+            Swal.fire({
+                title: msg[1],
+                text: msg[2],
+                icon: msg[0],
+                confirmButtonText: 'باشه'
+            })
+        </script>
+    <% } %>

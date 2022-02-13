@@ -1,0 +1,42 @@
+<%- contentFor('styles') %>
+
+
+
+<%- contentFor('body') %>
+
+    <%
+        if (user){
+            if (isAdmin){
+                %>
+    <a href="/admin">کاربر ادمین - <%= user.name %></a>
+    <br><br>
+    <a href="/logout">خروج</a>
+    <%
+            }else{
+                %>
+    <a href="/">کاربر ساده - <%= user.name %></a>
+    <br><br>
+    <a href="/logout">خروج</a>
+    <%
+
+            }
+        }else{%>
+    <a href="/login">ورود به سایت</a>
+    <%
+        }
+    %>
+
+    <script src="sweetalert2/dist/sweetalert2.js"></script>
+    <% if(message.length > 0){ %>
+    <script>
+        var x = `<%= message %>` ;
+
+        var msg = x.split("-");
+        Swal.fire({
+            title: msg[1],
+            text: msg[2],
+            icon: msg[0],
+            confirmButtonText: 'باشه'
+        })
+    </script>
+    <% } %>

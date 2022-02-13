@@ -1,0 +1,112 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+            <form action="/admin/users" method="get"  class="form-inline ml-3" style="margin-top: 10px;margin-bottom: 10px;margin-right: 10px;">
+                <div class="input-group input-group-sm" style="background-color: #f2f4f6;border-radius: 4px;">
+
+                    <% if (status != ''){ %>
+                        <input name="status" type="hidden" value="<% if (status != ''){%><%= status %><%}%>">
+                    <% } %>
+                    <input name="search" value="<% if (search != ''){%><%= search %><%} %>" class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search" style="border: none !important;background-color: #f2f4f6;">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- /.card-header -->
+            <% if (users.docs.length > 0){ %>
+
+                <div class="card-body p-0">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th class="col-md-4">نام کاربر</th>
+                            <th class="col-md-4">ایمیل</th>
+                            <th class="col-md-2">آمار کاربر</th>
+                            <th class="col-md-1">کنترل</th>
+                            <th class="col-md-1">وضعیت</th>
+                        </tr>
+
+                        <%
+                        if (users.docs.length > 0){
+                        users.docs.forEach(user=>{
+
+                        %>
+
+                            <tr>
+                                <td><p><%= user.name %></p></td>
+                                <td><p><%= user.email %></p></td>
+                                <td><button class="btn btn-success show-user-info" href="<%= user._id %>">مشاهده</button></td>
+
+                                <td>
+                                    <form class="float-right delete-form-<%- user._id %>" action="/admin/users/<%= user._id %>?_method=DELETE<% if (search != ''){ %>&search=<%= search %><% } %><% if (status != ''){ %>&status=<%= status %><% } %>" method="post" style="margin-left: 15px;"></form>
+                                    <button href="<%- user._id %>" type="submit" class="btn btn-danger btn-sm delete-btn"><i class="fa fa-trash"></i></button>
+                                </td>
+                                <td>
+                                    <a href="/admin/users/changeStatus/<%= user._id %>?page=<%= users.page %><% if (status != ''){%>&status=<%= status %><%}%><% if (search != ''){%>&search=<%= search %><%}%>" type="button" class="btn <%
+                                    if (!user.status){
+                                    %>
+                                btn-dark
+                                <%
+                                    }else{
+                                    %>
+                                btn-success
+                                <%
+                                    }
+                                    %> btn-sm">
+                                        <%
+                                        if (!user.status){
+                                        %>
+                                            غیرفعال
+                                        <%
+                                        }else{
+                                        %>
+                                            فعال
+                                        <%
+                                        }
+                                        %>
+                                    </a>
+                                </td>
+                            </tr>
+
+
+                        <%
+                        });
+                        }%>
+
+                        </tbody></table>
+                </div>
+            <% } %>
+
+            <% if (users.docs.length == 0){ %>
+                <div class="col-md-12 text-center" style="padding-top: 20px;padding-bottom: 30px;font-size: 30px;font-weight: bold;margin-top: 10px;">هیچ کاربری وجود ندارد</div>
+            <% } %>
+        </div>
+        <% if (users.totalPages > 1){ %>
+            <div class="card-tools col-md-12 text-center align-content-center" style="padding: 0;">
+                <ul class="pagination justify-content-center">
+                    <% if(users.page !== 1 && users.prevPage !== 1) {%>
+                        <li class="page-item"><a class="page-link" href="?page=1<% if (search != ''){%>&search=<%= search %><%}%><% if (status != ''){%>&status=<%= status %><%}%>">1</a></li>
+                    <% } %>
+                    <%if(users.hasPrevPage) { %>
+                        <li class="page-item"><a class="page-link" href="?page=<%= users.prevPage %><% if (search != ''){%>&search=<%= search %><%}%><% if (status != ''){%>&status=<%= status %><%}%>"><%= users.prevPage %></a></li>
+                    <% } %>
+                    <li class="page-item active"><a class="page-link" href="?page=<%= users.page %><% if (search != ''){%>&search=<%= search %><%}%><% if (status != ''){%>&status=<%= status %><%}%>"><%= users.page %></a></li>
+                    <% if(users.hasNextPage) {%>
+                        <li class="page-item"><a class="page-link" href="?page=<%= users.nextPage %><% if (search != ''){%>&search=<%= search %><%}%><% if (status != ''){%>&status=<%= status %><%}%>"><%= users.nextPage %></a></li>
+                    <% } %>
+                    <% if(users.totalPages !== users.page && users.nextPage !== users.totalPages) {%>
+                        <li class="page-item"><a class="page-link" href="?page=<%= users.totalPages %><% if (search != ''){%>&search=<%= search %><%}%><% if (status != ''){%>&status=<%= status %><%}%>"><%= users.totalPages %></a></li>
+                    <% } %>
+                </ul>
+
+            </div>
+        <% } %>
+    </div>
+</div>
+<%- include('../includes/flashMessage') %>
+
+

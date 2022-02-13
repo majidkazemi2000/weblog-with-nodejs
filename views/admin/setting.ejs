@@ -1,0 +1,111 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="row card-body">
+                <div class="col-md-8">
+                    <label>آیکون سایت</label>
+                    <form action="/admin/iconUploader" class="dropzone" id="demo-upload" style="border: 1px solid #ced4da;border-radius: 4px;height: 150px;overflow: hidden;padding-top: 0;" enctype="multipart/form-data"></form>
+                </div>
+                <div class="col-md-4 text-center" style="border: 1px solid #ced4da;border-radius: 4px;height: 150px;overflow: hidden;margin-top: 32px;padding: 0;">
+                    <img src="<% if (setting.image != ''){%>/<%= setting.image %><%}else{%>/dist/img/default-150x150.png<%} %>" alt="NOT FOUND" style="width: auto;height: 80%;margin-top: 5%;">
+                </div>
+            </div>
+            <form role="form" action="/admin/settings" method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>عنوان سایت</label>
+                        <textarea class="form-control" rows="2" placeholder="وارد کردن اطلاعات ..." style="resize: none;" name="title"><%= setting.title %></textarea>
+                        <%
+                        if (title_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= title_error %>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editor1">توضیحات سایت</label>
+                        <textarea class="form-control" rows="4" placeholder="وارد کردن اطلاعات ..." style="resize: none;" name="description"><%= setting.description %></textarea>
+                        <%
+                        if (description_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= description_error %>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">تگ های سایت</label>
+                        <input type="text" id="tags" name="tags" class="form-control col-sm-12" value="<%= setting.tags %>" data-role="tagsinput" placeholder="با دکمه Enter تایید کنید">
+                        <%
+                        if (tags_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= tags_error %>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>سیستم نظردهی</label>
+                        <select class="form-control" name="commentSystem">
+                            <option value="true"<% if (setting.commentSystem.toString() == 'true'){%> selected <%} %>>فعال</option>
+                            <option value="false" <% if (setting.commentSystem.toString() == 'false'){%> selected <%} %>>غیر فعال</option>
+                        </select>
+
+                        <%
+                        if (commentSystem_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= commentSystem_error %>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
+
+                    <div class="form-group">
+                        <button  type="submit" class="btn btn-primary col-md-6 offset-md-6 text-center" style="margin-top: 10px;">ذخیره تنظیمات</button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone('#demo-upload', {
+        paramName: "iconFile",
+        addRemoveLinks: true,
+        parallelUploads: 1,
+        maxFilesize: 5, // MB
+        init: function() {},
+        accept: function(file, done) {},
+        removedfile: function(file) {
+            alert("hello");
+        }
+    });
+</script>
+
+<%- include('../includes/flashMessage') %>
+

@@ -1,0 +1,113 @@
+<%- contentFor('styles') %>
+
+
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="margin-top: 50px;">
+        <div class="card card-primary">
+            <div class="card-header text-center" style="background-color: #2D95E3;">
+                <h3 class="card-title">صفحه ورود</h3>
+            </div>
+
+            <form role="form" action="/login" method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">آدرس ایمیل</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="ایمیل را وارد کنید" name="email">
+
+                        <%
+                            if (email_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= email_error %>
+                            </div>
+                        <%
+                            }
+                        %>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">رمز عبور</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="رمز عبور را وارد کنید" name="password">
+                        <%
+                            if (password_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= password_error %>
+                            </div>
+                        <%
+                            }
+                        %>
+                    </div>
+
+
+                    <div class="form-group" id="html_element"></div>
+                    <div class="form-group">
+                        <%
+                        if (recaptcha_error.length > 0){
+                        %>
+                            <div class="alert alert-danger alert-dismissible" style="margin-top: 5px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fa fa-close"></i> هشدار !</h5>
+                                <%= recaptcha_error %>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button style="background-color: #2D95E3;"  type="submit" class="btn btn-primary col-md-12 text-center">ورود</button>
+                        </div>
+                        <div class="col-md-6">
+                            <a  href="<%= google_link %>" class="btn btn-danger col-md-12 text-center">ورود با گوگل</a>
+                        </div>
+                    </div>
+                    <div class="row text-center" style="margin-top: 20px;">
+                        <a style="color: #2D95E3;" href="/register" class="col-md-12 text-center">هنوز ثبت نام نکرده اید ؟ کلیک کنید</a>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/sweetalert2/dist/sweetalert2.js"></script>
+<% if(message.length > 0){ %>
+<script>
+    var x = `<%= message %>` ;
+
+    var msg = x.split("-");
+    Swal.fire({
+        title: msg[1],
+        text: msg[2],
+        icon: msg[0],
+        confirmButtonText: 'باشه'
+    })
+</script>
+<% } %>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=fa"
+        async defer>
+</script>
+
+
+<script type="text/javascript">
+    var onloadCallback = function() {
+        grecaptcha.render('html_element', {
+            'sitekey' : '6LfcpikeAAAAAEZkNQJVvcva7978T6ILnq-gFkSd'
+        });
+
+    };
+</script>
+
+<%- contentFor('scripts') %>

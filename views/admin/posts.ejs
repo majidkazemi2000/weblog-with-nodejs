@@ -1,0 +1,110 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+            <form action="/admin/posts" method="get"  class="form-inline ml-3" style="margin-top: 10px;margin-bottom: 10px;margin-right: 10px;">
+                <div class="input-group input-group-sm" style="background-color: #f2f4f6;border-radius: 4px;">
+
+                    <% if (category != ''){ %>
+                        <input name="category" type="hidden" value="<% if (category != ''){%><%= category %><%}%>">
+                    <% } %>
+                    <input name="search" value="<% if (search != ''){%><%= search %><%} %>" class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search" style="border: none !important;background-color: #f2f4f6;">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- /.card-header -->
+            <% if (posts.docs.length > 0){ %>
+
+            <div class="card-body p-0">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th class="col-md-8">عنوان پست</th>
+                        <th class="col-md-1">نظرات</th>
+                        <th class="col-md-2 text-center">کنترل ها</th>
+                        <th class="col-md-1">وضعیت نمایش</th>
+                    </tr>
+
+                    <%
+                        if (posts.docs.length > 0){
+                            posts.docs.forEach(post=>{
+
+                                %>
+
+                    <tr>
+                        <td><a href="/posts/<%= post.slug %>"><%= post.title %></a></td>
+                        <td><a href="/admin/comments?post=<%= post._id %>">مشاهده</a></td>
+                        <td class="text-center">
+                            <form class="float-right delete-form-<%- post._id %>" action="/admin/posts/<%= post._id %>?_method=DELETE" method="post" style="margin-left: 15px;"></form>
+                            <button href="<%- post._id %>" type="submit" class="btn btn-danger btn-sm delete-btn"><i class="fa fa-trash"></i></button>
+                            <a href="/admin/posts/<%= post._id %>/edit" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+                        </td>
+                        <td>
+                            <a href="/admin/posts/changeStatus/<%= post._id %>?page=<%= posts.page %><% if (category != ''){%>&category=<%= category %><%}%><% if (search != ''){%>&search=<%= search %><%}%>" type="button" class="btn <%
+                            if (post.status === '0'){
+                            %>
+                                btn-dark
+                                <%
+                            }else{
+                            %>
+                                btn-success
+                                <%
+                            }
+                            %> btn-sm">
+                                <%
+                                    if (post.status === '0'){
+                                %>
+                                مخفی
+                                <%
+                                    }else{
+                                %>
+                                در حال نمایش
+                                <%
+                                    }
+                                %>
+                            </a>
+                        </td>
+                    </tr>
+
+
+                    <%
+                            });
+                        }%>
+
+                    </tbody></table>
+            </div>
+            <% } %>
+
+            <% if (posts.docs.length == 0){ %>
+                <div class="col-md-12 text-center" style="padding-top: 20px;padding-bottom: 30px;font-size: 30px;font-weight: bold;margin-top: 10px;">هیچ پستی وجود ندارد</div>
+            <% } %>
+        </div>
+        <% if (posts.totalPages > 1){ %>
+        <div class="card-tools col-md-12 text-center align-content-center" style="padding: 0;">
+            <ul class="pagination justify-content-center">
+                <% if(posts.page !== 1 && posts.prevPage !== 1) {%>
+                <li class="page-item"><a class="page-link" href="?page=1<% if (search != ''){%>&search=<%= search %><%}%><% if (category != ''){%>&category=<%= category %><%}%>">1</a></li>
+                <% } %>
+                <%if(posts.hasPrevPage) { %>
+                <li class="page-item"><a class="page-link" href="?page=<%= posts.prevPage %><% if (search != ''){%>&search=<%= search %><%}%><% if (category != ''){%>&category=<%= category %><%}%>"><%= posts.prevPage %></a></li>
+                <% } %>
+                <li class="page-item active"><a class="page-link" href="?page=<%= posts.page %><% if (search != ''){%>&search=<%= search %><%}%><% if (category != ''){%>&category=<%= category %><%}%>"><%= posts.page %></a></li>
+                <% if(posts.hasNextPage) {%>
+                <li class="page-item"><a class="page-link" href="?page=<%= posts.nextPage %><% if (search != ''){%>&search=<%= search %><%}%><% if (category != ''){%>&category=<%= category %><%}%>"><%= posts.nextPage %></a></li>
+                <% } %>
+                <% if(posts.totalPages !== posts.page && posts.nextPage !== posts.totalPages) {%>
+                <li class="page-item"><a class="page-link" href="?page=<%= posts.totalPages %><% if (search != ''){%>&search=<%= search %><%}%><% if (category != ''){%>&category=<%= category %><%}%>"><%= posts.totalPages %></a></li>
+                <% } %>
+            </ul>
+
+        </div>
+        <% } %>
+    </div>
+</div>
+<%- include('../includes/flashMessage') %>
+
+

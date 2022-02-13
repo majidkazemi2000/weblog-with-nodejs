@@ -1,0 +1,373 @@
+    <!-- Preloader -->
+    <div class="loader-mask">
+        <div class="loader">
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Bg Overlay -->
+    <div class="content-overlay"></div>
+
+    <!-- Sidenav -->
+    <header class="sidenav" id="sidenav">
+
+        <!-- close -->
+        <div class="sidenav__close">
+            <button class="sidenav__close-button" id="sidenav__close-button" aria-label="close sidenav">
+                <i class="ui-close sidenav__close-icon"></i>
+            </button>
+        </div>
+
+        <!-- Nav -->
+        <nav class="sidenav__menu-container">
+            <ul class="sidenav__menu" role="menubar">
+                <li>
+                    <a href="/" class="sidenav__menu-url">صفحه اصلی</a>
+                </li>
+                <li>
+                    <a href="#" class="sidenav__menu-url">دسته بندی ها</a>
+                    <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                    <ul class="sidenav__menu-dropdown">
+                        <% if (categories.length > 0){ categories.forEach(category=>{ %>
+                            <li><a href="/posts/category/<%= category.slug %>" class="sidenav__menu-url"><%= category.title %></a></li>
+                        <%})} %>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="/login" class="sidenav__menu-url">ورود</a>
+                </li>
+                <li>
+                    <a href="/register" class="sidenav__menu-url">ثبت نام</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="socials sidenav__socials text-center align-items-center align-content-center" style="padding: 0;padding-top: 25px;">
+
+            <div class="col-md-1"></div>
+            <a class="social social-twitter col-md-3  text-center" href="#" target="_blank" aria-label="twitter">
+                <i class="ui-twitter"></i>
+            </a>
+            <a class="social social-youtube col-md-3 text-center" href="#" target="_blank" aria-label="youtube">
+                <i class="ui-youtube"></i>
+            </a>
+            <a class="social social-instagram col-md-3 text-center" href="#" target="_blank" aria-label="instagram">
+                <i class="ui-instagram"></i>
+            </a>
+        </div>
+    </header> <!-- end sidenav -->
+
+    <main class="main oh" id="main">
+
+        <!-- Navigation -->
+        <header class="nav">
+            <div class="nav__holder nav--sticky">
+                <div class="container relative">
+                    <div class="flex-parent">
+
+                        <!-- Side Menu Button -->
+                        <button class="nav-icon-toggle" id="nav-icon-toggle" aria-label="Open side menu">
+                            <span class="nav-icon-toggle__box">
+                                <span class="nav-icon-toggle__inner"></span>
+                            </span>
+                        </button>
+
+
+                        <!-- Nav-wrap -->
+                        <nav class="flex-child nav__wrap d-none d-lg-block">
+                            <ul class="nav__menu">
+
+                                <li class="active">
+                                    <a href="/">صفحه اصلی</a>
+                                </li>
+
+                                <li class="nav__dropdown">
+                                    <a href="#">دسته بندی ها</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <% if (categories.length > 0){ categories.forEach(category=>{ %>
+                                            <li><a href="/posts/category/<%= category.slug %>" class="sidenav__menu-url"><%= category.title %></a></li>
+                                        <%})} %>
+                                    </ul>
+                                </li>
+
+
+
+
+                            </ul> <!-- end menu -->
+                        </nav> <!-- end nav-wrap -->
+
+                        <!-- Nav Right -->
+                        <div class="nav__right">
+                            <% if (user != undefined){ %>
+                                <ul class="nav__menu" style="list-style: none;margin-left: 20px;">
+                                    <li style="display: inline;">
+                                        <p style="margin-top: 8px;margin-left: 10px;"><%= user.name %></p>
+                                    </li>
+                                    <span> | </span>
+                                    <li style="display: inline;">
+                                        <a href="/logout">خروج</a>
+                                    </li>
+                                </ul>
+                            <% }else{ %>
+                                <ul class="nav__menu" style="list-style: none;margin-left: 20px;">
+                                    <li style="display: inline;">
+                                        <a href="/login">ورود</a>
+                                    </li>
+                                    <span> | </span>
+                                    <li style="display: inline;">
+                                        <a href="/register">ثبت نام</a>
+                                    </li>
+                                </ul>
+                            <% } %>
+                            <!-- Search -->
+                            <div class="nav__right-item nav__search">
+                                <a href="#" class="nav__search-trigger" id="nav__search-trigger">
+                                    <i class="ui-search nav__search-trigger-icon"></i>
+                                </a>
+                                <div class="nav__search-box" id="nav__search-box">
+                                    <form action="/" method="get" class="nav__search-form">
+                                        <input name="search" type="text" placeholder="جستجو مقالات" class="nav__search-input">
+                                        <button type="submit" class="search-button btn btn-lg btn-color btn-button">
+                                            <i class="ui-search nav__search-icon"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div> <!-- end nav right -->
+
+                    </div> <!-- end flex-parent -->
+                </div> <!-- end container -->
+
+            </div>
+        </header> <!-- end navigation -->
+
+        <!-- Breadcrumbs -->
+        <div class="container">
+            <ul class="breadcrumbs">
+                <li class="breadcrumbs__item">
+                    <a href="/" class="breadcrumbs__url">خانه</a>
+                </li>
+                <li class="breadcrumbs__item">
+                    <a href="/posts/<%= post.slug %>" class="breadcrumbs__url"><%= post.title %></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-container container" id="main-container">
+
+            <!-- Content -->
+            <div class="row">
+
+                <!-- post content -->
+                <div class="col-lg-12 blog__content mb-72">
+                    <div class="content-box">
+
+                        <!-- standard post -->
+                        <article class="entry mb-0">
+
+                            <div class="single-post__entry-header entry__header">
+                                <a href="/posts/category/<%= post.category.slug %>" class="entry__meta-category entry__meta-category--label entry__meta-category--green"><%= post.category.title %></a>
+                                <h1 class="single-post__entry-title" style="font-size: 30px;">
+                                    <%= post.title %>
+                                </h1>
+
+                                <div class="entry__meta-holder">
+                                    <ul class="entry__meta">
+                                        <li class="entry__meta-author">
+                                            <span>نویسنده : </span>
+                                            <a href="#"><%= post.user.name %></a>
+                                        </li>
+                                        <li class="entry__meta-date"><%= convertDate(moment(post.date).locale('fa').format('YYYY/MM/DD HH:mm')) %></li>
+                                    </ul>
+
+                                    <ul class="entry__meta">
+                                        <li class="entry__meta-views">
+                                            <i class="ui-eye"></i>
+                                            <span><%= convertNumbers(post.viewCount.toString()) %></span>
+                                        </li>
+                                        <li class="entry__meta-comments">
+                                            <a href="#">
+                                                <i class="ui-chat-empty"></i>
+                                                <span><%= convertNumbers(post.commentCount.toString()) %></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> <!-- end entry header -->
+
+                            <div class="entry__img-holder">
+                                <img src="img/content/thumb/post-8.jpg" alt="" class="entry__img">
+                            </div>
+                            <div class="entry__article-wrap">
+                                <div class="entry__article"><%- convertEnglish(post.body) %></div>
+                            </div>
+
+                            <% if (relatedPost.length > 0){ %>
+                            <!-- Related Posts -->
+                            <section class="section related-posts mt-40 mb-0">
+                                <div class="title-wrap title-wrap--line">
+                                    <h3 class="section-title">مطالب مرتبط</h3>
+                                </div>
+
+                                <!-- Slider -->
+                                <div id="owl-posts-3-items" class="owl-carousel owl-theme owl-carousel--arrows-outside">
+
+                                    <% relatedPost.forEach(post=>{ %>
+                                        <article class="entry thumb thumb--size-1">
+                                            <div class="entry__img-holder thumb__img-holder" style="background-image: url('/<%= path.basename(post.thumbnail) %>');">
+                                                <div class="bottom-gradient"></div>
+                                                <div class="thumb-text-holder">
+                                                    <h2 class="thumb-entry-title">
+                                                        <a href="/posts/<%= post.slug %>"><%= post.title %></a>
+                                                    </h2>
+                                                </div>
+                                                <a href="<%= post.slug %>" class="thumb-url"></a>
+                                            </div>
+                                        </article>
+                                    <% }) %>
+
+                                </div> <!-- end slider -->
+
+                            </section> <!-- end related posts -->
+
+                            <% } %>
+                        </article> <!-- end standard post -->
+
+
+                        <!-- Comments -->
+                        <div class="entry-comments">
+                            <% if (comments.length > 0){ %>
+                                <div class="title-wrap title-wrap--line">
+                                    <h3 class="section-title" style="direction: rtl;"><%= comments.length %> دیدگاه </h3>
+                                </div>
+
+
+
+                                <ul class="comment-list">
+                                    <% comments.forEach(comment=>{ %>
+
+                                        <li class="comment">
+                                            <div class="comment-body">
+                                                <div class="comment-avatar">
+                                                    <img alt="" src="/imgBlog/default-avatar.png">
+                                                </div>
+                                                <div class="comment-text">
+                                                    <h6 class="comment-author"><%= comment.user.name %> | </h6>
+                                                    <div class="comment-metadata">
+                                                        <a href="#" class="comment-date" style="direction: rtl;"><%= comment.date %></a>
+                                                    </div>
+                                                    <p><%= comment.body %></p>
+                                                </div>
+                                            </div>
+
+                                        </li>
+
+                                    <% }) %>
+
+                                </ul>
+                            <% }else{ %>
+                                    <div class="col-lg-12 text-center" style="margin-top: 50px;border: solid 2px black;border-radius: 5px;padding: 30px 10px;"><p style="font-size: 30px;font-weight: bold;color: black;">هیچ دیدگاهی وجود ندارد</p></div>
+                                <% } %>
+
+                        </div> <!-- end comments -->
+
+
+                        <% if (settings.commentSystem){ if (user != undefined){ %>
+                            <!-- Comment Form -->
+                            <div id="respond" class="comment-respond">
+
+                                <div class="title-wrap">
+                                    <h5 class="comment-respond__title section-title">دیدگاه شما</h5>
+                                </div>
+                                <form action="/comment/<%= post._id %>" method="post">
+                                    <textarea placeholder="متن نظر شما" name="text" rows="3" required="required" style="resize: none;padding: 20px;width: 300px;"></textarea>
+                                    <div class="form-group" id="html_element"></div>
+                                    <div class="comment-form-submit" style="margin-top: 15px;">
+                                        <input type="submit" class="btn btn-lg btn-color btn-button" style="width: 300px;" value="ارسال دیدگاه" id="submit-message">
+                                    </div>
+
+                                </form>
+                            </div> <!-- end comment form -->
+                        <% }else{ %>
+                            <div class="col-lg-12 text-center" style="border-radius: 5px;padding: 30px 10px;"><a href="/login" style="font-size: 20px;font-weight: bold;color: #2D95E3;">برای ثبت نظر ابتدا وارد سایت شوید</a></div>
+
+                        <% }} %>
+
+
+
+
+                    </div> <!-- end content box -->
+                </div> <!-- end post content -->
+            </div> <!-- end content -->
+        </div> <!-- end main container -->
+
+        <!-- Footer -->
+
+        <footer class="footer footer--light" style="padding: 0;margin-top: 0;">
+            <div class="container" style="padding: 0;margin-top: 0;">
+                <div class="footer__widgets" style="padding:0;margin-top: 0;">
+                    <div class="row">
+
+                        <div class="col-lg-9 col-md-6"></div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <aside class="widget widget-logo">
+                                <a href="index.html">
+                                    <img src="/imgBlog/logo_default_white.png" srcset="/imgBlog/logo_default_white.png 1x, /imgBlog/logo_default_white@2x.png 2x" class="logo__img" alt="">
+                                </a>
+                                <p class="copyright text-center">
+                                    © حقوق سایت متعلق به مجید کاظمی است
+                                </p>
+                                <div class="socials socials--large socials--rounded mb-24">
+                                    <div class="col-lg-3 col-4"></div>
+                                    <a href="#" class="social social-twitter" aria-label="twitter"><i class="ui-twitter"></i></a>
+                                    <a href="#" class="social social-youtube" aria-label="youtube"><i class="ui-youtube"></i></a>
+                                    <a href="#" class="social social-instagram" aria-label="instagram"><i class="ui-instagram"></i></a>
+                                </div>
+                            </aside>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div> <!-- end container -->
+
+        </footer>
+         <!-- end footer -->
+
+        <div id="back-to-top">
+            <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+        </div>
+
+    </main> <!-- end main-wrapper -->
+
+
+
+    <script src="/sweetalert2/dist/sweetalert2.js"></script>
+    <% if(message.length > 0){ %>
+        <script>
+            var x = `<%= message %>` ;
+
+            var msg = x.split("-");
+            Swal.fire({
+                title: msg[1],
+                text: msg[2],
+                icon: msg[0],
+                confirmButtonText: 'باشه'
+            })
+        </script>
+    <% } %>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=fa" async defer></script>
+
+
+<script type="text/javascript">
+    var onloadCallback = function() {
+        grecaptcha.render('html_element', {
+            'sitekey' : '6LfcpikeAAAAAEZkNQJVvcva7978T6ILnq-gFkSd'
+        });
+
+    };
+</script>

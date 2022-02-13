@@ -1,0 +1,20 @@
+<script src="/sweetalert2/dist/sweetalert2.js"></script>
+
+<% if(message.length > 0){ %>
+    <script>
+        showDialog();
+        async function showDialog(){
+            var x = `<%= message %>` ;
+
+            var msg = x.split("-");
+            await Swal.fire({
+                title: msg[1],
+                text: msg[2],
+                icon: msg[0],
+                confirmButtonText: 'باشه'
+            })
+        }
+
+
+    </script>
+<% } %>

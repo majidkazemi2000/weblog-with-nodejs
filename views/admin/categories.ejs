@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+            <!-- /.card-header -->
+            <% if (categories.docs.length > 0){ %>
+            <div class="card-body p-0">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th class="col-md-8">عنوان دسته بندی</th>
+                        <th class="col-md-2">کنترل ها</th>
+                        <th class="col-md-2">پست های مربوط</th>
+                    </tr>
+
+                    <%
+                        if (categories.docs.length > 0){
+                            categories.docs.forEach(category=>{
+
+                                %>
+
+                    <tr>
+                        <td><a href="/category/<%= category.slug %>"><%= category.title %></a></td>
+
+                        <td>
+                            <form class="float-right delete-form-<%- category._id %>" action="/admin/categories/<%= category._id %>?_method=DELETE" method="post" style="margin-left: 15px;"></form>
+                            <button href="<%- category._id %>" type="submit" class="btn btn-danger btn-sm delete-btn"><i class="fa fa-trash"></i></button>
+                            <a href="/admin/categories/<%= category._id %>/edit" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+                        </td>
+                        <td>
+                            <a href="/admin/posts?category=<%= category._id %>">نمایش پست ها</a>
+                        </td>
+                    </tr>
+
+
+                    <%
+                            });
+                        }%>
+
+                    </tbody></table>
+            </div>
+            <% } %>
+
+            <% if (categories.docs.length == 0){ %>
+                <div class="col-md-12 text-center" style="padding-top: 20px;padding-bottom: 30px;font-size: 30px;font-weight: bold;margin-top: 10px;">هیچ دسته بندی وجود ندارد</div>
+            <% } %>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <% if (categories.totalPages > 1){ %>
+        <div class="card-tools col-md-12 text-center align-content-center" style="padding: 0;">
+            <ul class="pagination justify-content-center">
+                <% if(categories.page !== 1 && categories.prevPage !== 1) {%>
+                <li class="page-item"><a class="page-link" href="?page=1<% if (search != ''){%>&search=<%= search %><%}%>">1</a></li>
+                <% } %>
+                <%if(categories.hasPrevPage) { %>
+                <li class="page-item"><a class="page-link" href="?page=<%= categories.prevPage %><% if (search != ''){%>&search=<%= search %><%}%>"><%= categories.prevPage %></a></li>
+                <% } %>
+                <li class="page-item active"><a class="page-link" href="?page=<%= categories.page %><% if (search != ''){%>&search=<%= search %><%}%>"><%= categories.page %></a></li>
+                <% if(categories.hasNextPage) {%>
+                <li class="page-item"><a class="page-link" href="?page=<%= categories.nextPage %><% if (search != ''){%>&search=<%= search %><%}%>"><%= categories.nextPage %></a></li>
+                <% } %>
+                <% if(categories.totalPages !== categories.page && categories.nextPage !== categories.totalPages) {%>
+                <li class="page-item"><a class="page-link" href="?page=<%= categories.totalPages %><% if (search != ''){%>&search=<%= search %><%}%>"><%= categories.totalPages %></a></li>
+                <% } %>
+            </ul>
+
+        </div>
+        <% } %>
+
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+<%- include('../includes/flashMessage') %>

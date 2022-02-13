@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+            <div class="card-body p-3">
+                <div class="form-group">
+                    <form action="/admin/comments" method="get">
+                        <label style="margin-right: 10px;">انتخاب تاریخ:</label>
+
+                        <% if (approved != '' && (approved == 'true' || approved == 'false')){%>
+                            <input type="hidden" name="approved" value="<%= approved %>">
+                        <%}%>
+
+                        <% if (post_id != ''){%>
+                            <input type="hidden" name="post" value="<%= post_id %>">
+                        <%}%>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input type="hidden" name="date" class="form-control alt-field-example">
+                            <input class="normal-example form-control pwt-datepicker-input-element">
+                            <div class="mr-2">
+                                <button class="btn btn-group" >جستجو</button>
+                            </div>
+                        </div>
+
+                    </form>
+                    <!-- /.input group -->
+                </div>
+            </div>
+
+            <% if (comments.docs.length > 0){ %>
+            <div class="card-body p-0">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th class="col-md-2">کاربر</th>
+                        <th class="col-md-5">متن نظر</th>
+                        <th class="col-md-2" style="text-align: center;">پست مربوطه</th>
+                        <th class="col-md-2" style="text-align: center;">تعداد لایک ها</th>
+                        <th class="col-md-1" style="text-align: center;">کنترل</th>
+                        <th class="col-md-2" style="text-align: center;">وضعیت</th>
+                    </tr>
+
+                    <%
+                        if (comments.docs.length > 0){
+                            comments.docs.forEach(comment=>{
+                    %>
+
+                    <tr>
+                        <td><p><%= comment.user.name %></p></td>
+                        <td><p><%= comment.body %></p></td>
+                        <td style="text-align: center;"><a href="/posts/<%= comment.post.slug %>">مشاهده</a></td>
+                        <td style="text-align: center;"><p><%= comment.likeCount %></p></td>
+                        <td style="text-align: center;">
+                            <form class="float-right delete-form-<%- comment._id %>" action="/admin/comments/<%= comment._id %>?_method=DELETE" method="post" style="margin-left: 15px;"></form>
+                            <button href="<%- comment._id %>" type="submit" class="btn btn-danger btn-sm delete-btn"><i class="fa fa-trash"></i></button>
+                        </td>
+                        <td style="text-align: center;">
+                            <a href="/admin/comments/changeStatus/<%= comment._id %>?page=<%= comments.page %><% if (approved != '' && (approved == 'true' || approved == 'false')){%>&approved=<%= approved %><%}%><% if (post_id != ''){%>&post=<%= post_id %><%}%>" type="button" class="btn <%
+                            if (!comment.approved){
+                            %>
+                                btn-danger
+                                <%
+                            }else{
+                            %>
+                                btn-success
+                                <%
+                            }
+                            %> btn-sm">
+                                <%
+                                if (!comment.approved){
+                                %>
+                                    تایید نشده
+                                <%
+                                }else{
+                                %>
+                                    تایید شده
+                                <%
+                                }
+                                %>
+                            </a>
+                        </td>
+                    </tr>
+
+
+                    <%
+                        });
+                    }%>
+
+                    </tbody></table>
+            </div>
+            <% } %>
+
+            <% if (comments.docs.length == 0){ %>
+                <div class="col-md-12 text-center" style="padding-top: 20px;padding-bottom: 30px;font-size: 30px;font-weight: bold;margin-top: 10px;">هیچ نظری وجود ندارد</div>
+            <% } %>
+        </div>
+
+        <% if (comments.totalPages > 1){ %>
+        <div class="card-tools col-md-12 text-center align-content-center" style="padding: 0;">
+            <ul class="pagination justify-content-center">
+                <% if(comments.page !== 1 && comments.prevPage !== 1) {%>
+                <li class="page-item"><a class="page-link" href="?page=1<% if (date != ''){%>&date=<%= date %><%}%><% if (approved != '' && (approved == 'true' || approved == 'false')){%>&approved=<%= approved %><%}%><% if (post_id != ''){%>&post=<%= post_id %><%}%>">1</a></li>
+                <% } %>
+                <%if(comments.hasPrevPage) { %>
+                <li class="page-item"><a class="page-link" href="?page=<%= comments.prevPage %><% if (date != ''){%>&date=<%= date %><%}%><% if (approved != '' && (approved == 'true' || approved == 'false')){%>&approved=<%= approved %><%}%><% if (post_id != ''){%>&post=<%= post_id %><%}%>"><%= comments.prevPage %></a></li>
+                <% } %>
+                <li class="page-item active"><a class="page-link" href="?page=<%= comments.page %><% if (date != ''){%>&date=<%= date %><%}%><% if (approved != '' && (approved == 'true' || approved == 'false')){%>&approved=<%= approved %><%}%><% if (post_id != ''){%>&post=<%= post_id %><%}%>"><%= comments.page %></a></li>
+                <% if(comments.hasNextPage) {%>
+                <li class="page-item"><a class="page-link" href="?page=<%= comments.nextPage %><% if (date != ''){%>&date=<%= date %><%}%><% if (approved != '' && (approved == 'true' || approved == 'false')){%>&approved=<%= approved %><%}%><% if (post_id != ''){%>&post=<%= post_id %><%}%>"><%= comments.nextPage %></a></li>
+                <% } %>
+                <% if(comments.totalPages !== comments.page && comments.nextPage !== comments.totalPages) {%>
+                <li class="page-item"><a class="page-link" href="?page=<%= comments.totalPages %><% if (date != ''){%>&date=<%= date %><%}%><% if (approved != '' && (approved == 'true' || approved == 'false')){%>&approved=<%= approved %><%}%><% if (post_id != ''){%>&post=<%= post_id %><%}%>"><%= comments.totalPages %></a></li>
+                <% } %>
+            </ul>
+
+        </div>
+        <% } %>
+    </div>
+</div>
+
+
+<%- include('../includes/flashMessage') %>

@@ -1,0 +1,177 @@
+<div class="row">
+    <div class="col-md-4 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-info"><i class="fa fa-file-text-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">تعداد پست ها</span>
+                <span class="info-box-number"><%= posts_count %></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fa fa-user-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">تعداد کاربرها</span>
+                <span class="info-box-number"><%= user_count %></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-warning"><i style="color: white;" class="fa fa-comment-o"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">تعداد کامنت ها</span>
+                <span class="info-box-number"><%= comment_count %></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 text-center">
+        <div class="card card-dark text-center">
+            <div class="card-header">
+                <h3 class="card-title">مرورگر ها</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6 text-center">
+        <div class="card card-dark text-center">
+            <div class="card-header">
+                <h3 class="card-title">پلتفرم ها</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <canvas id="myChart2" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    const brows = `<%- browes %>`;
+    const browsers = JSON.parse(brows);
+    var data = {
+        labels: ["CHROME", "FIREFOX", "IE", "EDGE", "SAFARI", "OPERA", "OTHER"],
+        datasets: [
+            {
+                label: "مرورگر های استفاده شده توسط کاربران",
+                backgroundColor: ["#f56954","#f39c12","#00c0ff","#00a65a","#00c0e1","#ff0000","#3e3e3e"],
+                hoverBackgroundColor: ["#f56954","#f39c12","#00c0ff","#00a65a","#00c0e1","#ff0000","#3e3e3e"],
+                data: [browsers.chrome, browsers.firefox, browsers.ie, browsers.edge, browsers.safari, browsers.opera,browsers.other],
+            }
+        ]
+    };
+
+    var options = {
+        animation: {
+            duration: 1500
+        },
+        scales: {
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                    // OR //
+                    beginAtZero: true,   // minimum value will be 0.
+                    suggestedMax: 10
+                },
+                gridLines: {
+                    display: true
+                },
+                pointLabels: {
+                    fontFamily: "'font1'"
+                }
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false
+                },
+                ticks: {
+                    fontFamily: "'font1'",
+                }
+            }],
+        },
+    };
+
+    const platforms = `<%- plats %>`;
+    const plats = JSON.parse(platforms);
+
+    var data2 = {
+        labels: ["ANDROID", "IOS", "WINDOWS", "LINUX", "MAC", "WINDOWS PHONE", "OTHER"],
+        datasets: [
+            {
+                label: "پلتفرم های مورد استفاده کاربران",
+                backgroundColor: ["#00a65a","#C0C0C0","#00c0ff","#000000","#8800ee","#0011ee","#3e3e3e"],
+                hoverBackgroundColor: ["#00a65a","#C0C0C0","#00c0ff","#000000","#8800ee","#0011ee","#3e3e3e"],
+                data: [plats.android, plats.ios, plats.windows, plats.linux, plats.mac, plats.windowsPhone, plats.other],
+            }
+        ]
+    };
+
+    var options2 = {
+        animation: {
+            duration: 1500
+        },
+        scales: {
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                    // OR //
+                    beginAtZero: true,   // minimum value will be 0.
+                    suggestedMax: 10
+                },
+                gridLines: {
+                    display: true
+                },
+                pointLabels: {
+                    fontFamily: "'font1'"
+                }
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false
+                },
+                ticks: {
+                    fontFamily: "'font1'",
+                }
+            }],
+        },
+    };
+
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var ctx2 = document.getElementById("myChart2").getContext("2d");
+
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+
+    var myBarChart2 = new Chart(ctx2, {
+        type: 'pie',
+        data: data2,
+        options: options2
+    });
+
+
+
+</script>
+<%- include('../includes/flashMessage') %>
